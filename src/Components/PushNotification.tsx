@@ -143,167 +143,168 @@ export default function OneSignalPlayerGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-100 p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
-          <div className="flex items-center justify-center mb-6">
-            <div className="bg-purple-600 p-3 rounded-full">
-              <Bell className="w-8 h-8 text-white" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 sm:p-6">
+      <div className="max-w-5xl mx-auto">
+        <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-3xl shadow-2xl p-6 sm:p-10 mb-6 border border-slate-700">
+          <div className="flex items-center justify-center mb-8">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-500 rounded-full blur-lg opacity-75 animate-pulse"></div>
+              <div className="relative bg-gradient-to-br from-blue-600 to-blue-700 p-4 rounded-full shadow-lg">
+                <Bell className="w-8 h-8 text-white" />
+              </div>
             </div>
           </div>
 
-          <h1 className="text-2xl font-bold text-gray-800 text-center mb-2">
-            OneSignal Web Push - Frontend Demo
+          <h1 className="text-3xl sm:text-4xl font-bold text-white text-center mb-3">
+            OneSignal Push Notifications
           </h1>
-          <p className="text-gray-600 text-center mb-6 text-sm">
-            Register and see notifications in real-time
+          <p className="text-slate-400 text-center mb-8 text-sm sm:text-base">
+            Generate your Player ID and receive real-time notifications
           </p>
 
-          <div className="space-y-4">
-            {/* App ID Display */}
+          <div className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                OneSignal App ID (from .env)
+              <label className="block text-sm font-semibold text-slate-300 mb-3">
+                App Configuration
               </label>
               <div className="relative">
-                <Key className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                <div className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 font-mono text-sm">
-                  {appId && appId !== 'your-app-id-here' ? appId : 'Not configured - check .env file'}
+                <Key className="absolute left-4 top-4 w-5 h-5 text-blue-400" />
+                <div className="w-full pl-12 pr-4 py-4 border border-slate-600 rounded-xl bg-slate-900 text-slate-300 font-mono text-sm transition-all hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10">
+                  {appId && appId !== 'your-app-id-here' ? appId : 'Not configured'}
                 </div>
               </div>
             </div>
 
-            {/* Email Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Your Email (External User ID)
+              <label className="block text-sm font-semibold text-slate-300 mb-3">
+                Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-4 top-4 w-5 h-5 text-blue-400" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="user@example.com"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
+                  placeholder="you@example.com"
+                  className="w-full pl-12 pr-4 py-4 border border-slate-600 rounded-xl bg-slate-900 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                 />
               </div>
             </div>
 
-            {/* SDK Status */}
-            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
-              <div className={`w-2 h-2 rounded-full ${sdkLoaded ? 'bg-green-500' : 'bg-yellow-500 animate-pulse'}`}></div>
-              <span className="text-sm text-gray-600">
-                {sdkLoaded ? 'OneSignal SDK Ready' : 'Loading OneSignal SDK...'}
+            <div className="flex items-center gap-3 p-4 bg-slate-900/50 rounded-xl border border-slate-700">
+              <div className={`w-3 h-3 rounded-full ${sdkLoaded ? 'bg-emerald-500 shadow-lg shadow-emerald-500/50' : 'bg-amber-500 animate-pulse'}`}></div>
+              <span className="text-sm text-slate-400">
+                {sdkLoaded ? 'OneSignal SDK Ready' : 'Initializing SDK...'}
               </span>
             </div>
 
-            {/* Register Button */}
             <button
               onClick={handleRegister}
               disabled={loading || !sdkLoaded}
-              className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-blue-500/50 disabled:shadow-none"
             >
               {loading ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   Registering...
                 </>
               ) : (
-                'Register for Push Notifications'
+                <>
+                  <Bell className="w-5 h-5" />
+                  Register for Notifications
+                </>
               )}
             </button>
 
-            {/* Error Message */}
             {error && (
-              <div className="flex items-start gap-2 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-red-700">{error}</p>
+              <div className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/30 rounded-xl animate-in fade-in">
+                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-red-300">{error}</p>
               </div>
             )}
 
-            {/* Success Message */}
             {success && (
-              <div className="flex items-start gap-2 p-4 bg-green-50 border border-green-200 rounded-lg">
-                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-green-700">{success}</p>
+              <div className="flex items-start gap-3 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl animate-in fade-in">
+                <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-emerald-300">{success}</p>
               </div>
             )}
 
-            {/* Player ID & Info Display */}
             {playerId && (
-              <div className="space-y-3">
-                <div className="p-4 bg-purple-50 border-2 border-purple-200 rounded-lg">
-                  <label className="block text-sm font-medium text-purple-900 mb-2">
-                    Player ID (Subscription ID):
+              <div className="space-y-4 mt-8 pt-8 border-t border-slate-700">
+                <div className="p-5 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-2 border-blue-500/30 rounded-xl">
+                  <label className="block text-sm font-semibold text-blue-300 mb-3">
+                    Your Player ID
                   </label>
-                  <div className="flex items-center gap-2">
-                    <code className="flex-1 p-3 bg-white rounded border border-purple-200 text-sm text-purple-800 font-mono break-all">
+                  <div className="flex items-center gap-3">
+                    <code className="flex-1 p-4 bg-slate-900 rounded-lg border border-slate-600 text-sm text-blue-300 font-mono break-all overflow-auto max-h-24">
                       {playerId}
                     </code>
                     <button
                       onClick={() => copyToClipboard(playerId, 'Player ID')}
-                      className="px-4 py-3 bg-purple-600 text-white rounded hover:bg-purple-700 transition text-sm font-medium whitespace-nowrap"
+                      className="px-5 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all font-medium text-sm whitespace-nowrap shadow-lg hover:shadow-blue-500/50"
                     >
                       Copy
                     </button>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 bg-blue-50 rounded-lg">
-                    <p className="text-xs text-blue-600 font-medium mb-1">Status</p>
-                    <p className="text-sm font-semibold text-blue-900">
-                      {isSubscribed ? 'Subscribed' : 'Pending'}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-700 hover:border-emerald-500/50 transition-all">
+                    <p className="text-xs text-slate-500 font-semibold mb-2">Status</p>
+                    <p className="text-base font-bold text-emerald-400">
+                      {isSubscribed ? 'Active' : 'Pending'}
                     </p>
                   </div>
-                  <div className="p-3 bg-green-50 rounded-lg">
-                    <p className="text-xs text-green-600 font-medium mb-1">User ID</p>
-                    <p className="text-sm font-semibold text-green-900 truncate">{email}</p>
+                  <div className="p-4 bg-slate-900/50 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-all">
+                    <p className="text-xs text-slate-500 font-semibold mb-2">Email</p>
+                    <p className="text-sm font-mono text-blue-300 truncate">{email}</p>
                   </div>
                 </div>
               </div>
             )}
           </div>
 
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">Next Steps:</h3>
-            <ol className="text-xs text-gray-600 space-y-1 list-decimal list-inside">
-              <li>Copy your Player ID above</li>
-              <li>Go to OneSignal Dashboard → Messages → New Push</li>
-              <li>Select "Send to Particular Segment" or use the Player ID</li>
-              <li>Send a test notification and watch it appear below!</li>
+          <div className="mt-8 pt-8 border-t border-slate-700">
+            <h3 className="text-sm font-semibold text-slate-300 mb-4">How to Send Notifications:</h3>
+            <ol className="text-xs text-slate-400 space-y-2 list-decimal list-inside">
+              <li>Copy your Player ID from above</li>
+              <li>Open OneSignal Dashboard</li>
+              <li>Navigate to Messages → New Push</li>
+              <li>Target by Player ID and send test notification</li>
             </ol>
           </div>
         </div>
 
-        {/* Notifications Panel */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Bell className="w-6 h-6 text-purple-600" />
-            <h2 className="text-xl font-bold text-gray-800">
-              Received Notifications ({notifications.length})
+        <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-3xl shadow-2xl p-6 sm:p-10 border border-slate-700">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-blue-500/20 rounded-lg">
+              <Bell className="w-6 h-6 text-blue-400" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white">
+              Notifications
+              <span className="text-blue-400 ml-2">({notifications.length})</span>
             </h2>
           </div>
 
           {notifications.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="bg-gray-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Bell className="w-10 h-10 text-gray-400" />
+            <div className="text-center py-16">
+              <div className="bg-slate-700/50 w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-600">
+                <Bell className="w-12 h-12 text-slate-500" />
               </div>
-              <p className="text-gray-500 text-sm">
-                No notifications received yet. Send a test notification from OneSignal!
+              <p className="text-slate-400 text-sm">
+                No notifications yet. Send one from OneSignal to see it here!
               </p>
             </div>
           ) : (
             <div className="space-y-3">
               {notifications.map((notif, index) => (
-                <div key={index} className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200">
+                <div key={index} className="p-4 bg-slate-900/50 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-all hover:shadow-lg hover:shadow-blue-500/10">
                   <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-semibold text-gray-800">{notif.title}</h4>
-                    <span className="text-xs text-gray-500">{notif.time}</span>
+                    <h4 className="font-semibold text-white text-sm sm:text-base">{notif.title}</h4>
+                    <span className="text-xs text-slate-500 ml-2">{notif.time}</span>
                   </div>
-                  <p className="text-sm text-gray-600">{notif.message}</p>
+                  <p className="text-sm text-slate-300">{notif.message}</p>
                 </div>
               ))}
             </div>
