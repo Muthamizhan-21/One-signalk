@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { AlertCircle, CheckCircle, Key, Mail, Bell, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { AlertCircle, CheckCircle, Key, Mail, Bell } from 'lucide-react';
 
 declare global {
   interface Window {
@@ -8,10 +8,9 @@ declare global {
 }
 
 export default function OneSignalPlayerGenerator() {
-  const [appId, setAppId] = useState('');
+  const appId = import.meta.env.VITE_ONESIGNAL_APP_ID;
   const [email, setEmail] = useState('');
   const [playerId, setPlayerId] = useState('');
-  const [pushToken, setPushToken] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sdkLoaded, setSdkLoaded] = useState(false);
@@ -55,7 +54,7 @@ export default function OneSignalPlayerGenerator() {
         };
         
         setNotifications(prev => [newNotification, ...prev]);
-        setSuccess(`📬 New notification received: ${notification.title}`);
+        setSuccess(`New notification received: ${notification.title}`);
       });
     }
   };
@@ -64,8 +63,8 @@ export default function OneSignalPlayerGenerator() {
     setError('');
     setSuccess('');
 
-    if (!appId.trim()) {
-      setError('Please enter your OneSignal App ID');
+    if (!appId || appId === 'your-app-id-here') {
+      setError('Please configure VITE_ONESIGNAL_APP_ID in your .env file');
       return;
     }
 
@@ -115,22 +114,18 @@ export default function OneSignalPlayerGenerator() {
       // Wait for subscription to complete
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Get subscription info
       const subscriptionId = await window.OneSignal.User.PushSubscription.id;
       const token = await window.OneSignal.User.PushSubscription.token;
       const optedIn = await window.OneSignal.User.PushSubscription.optedIn;
 
-      console.log('📱 Subscription ID (Player ID):', subscriptionId);
-      console.log('🔑 Push Token:', token);
-      console.log('✅ Opted In:', optedIn);
+      console.log('Subscription ID (Player ID):', subscriptionId);
+      console.log('Push Token:', token);
+      console.log('Opted In:', optedIn);
 
       if (subscriptionId) {
         setPlayerId(subscriptionId);
         setIsSubscribed(optedIn);
-        if (token) {
-          setPushToken(token.substring(0, 50) + '...');
-        }
-        setSuccess('✅ Successfully registered! You can now receive push notifications.');
+        setSuccess('Successfully registered! You can now receive push notifications.');
       } else {
         setError('Registration completed but Player ID not generated yet. Please check console.');
       }
@@ -165,20 +160,16 @@ export default function OneSignalPlayerGenerator() {
           </p>
 
           <div className="space-y-4">
-            {/* App ID Input */}
+            {/* App ID Display */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                OneSignal App ID
+                OneSignal App ID (from .env)
               </label>
               <div className="relative">
                 <Key className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  value={appId}
-                  onChange={(e) => setAppId(e.target.value)}
-                  placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition"
-                />
+                <div className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 font-mono text-sm">
+                  {appId && appId !== 'your-app-id-here' ? appId : 'Not configured - check .env file'}
+                </div>
               </div>
             </div>
 
@@ -203,7 +194,7 @@ export default function OneSignalPlayerGenerator() {
             <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
               <div className={`w-2 h-2 rounded-full ${sdkLoaded ? 'bg-green-500' : 'bg-yellow-500 animate-pulse'}`}></div>
               <span className="text-sm text-gray-600">
-                {sdkLoaded ? '✅ OneSignal SDK Ready' : '⏳ Loading OneSignal SDK...'}
+                {sdkLoaded ? 'OneSignal SDK Ready' : 'Loading OneSignal SDK...'}
               </span>
             </div>
 
@@ -219,7 +210,7 @@ export default function OneSignalPlayerGenerator() {
                   Registering...
                 </>
               ) : (
-                '🔔 Register for Push Notifications'
+                'Register for Push Notifications'
               )}
             </button>
 
@@ -244,7 +235,7 @@ export default function OneSignalPlayerGenerator() {
               <div className="space-y-3">
                 <div className="p-4 bg-purple-50 border-2 border-purple-200 rounded-lg">
                   <label className="block text-sm font-medium text-purple-900 mb-2">
-                    🎯 Player ID (Subscription ID):
+                    Player ID (Subscription ID):
                   </label>
                   <div className="flex items-center gap-2">
                     <code className="flex-1 p-3 bg-white rounded border border-purple-200 text-sm text-purple-800 font-mono break-all">
@@ -263,7 +254,7 @@ export default function OneSignalPlayerGenerator() {
                   <div className="p-3 bg-blue-50 rounded-lg">
                     <p className="text-xs text-blue-600 font-medium mb-1">Status</p>
                     <p className="text-sm font-semibold text-blue-900">
-                      {isSubscribed ? '✅ Subscribed' : '⏳ Pending'}
+                      {isSubscribed ? 'Subscribed' : 'Pending'}
                     </p>
                   </div>
                   <div className="p-3 bg-green-50 rounded-lg">
@@ -276,7 +267,7 @@ export default function OneSignalPlayerGenerator() {
           </div>
 
           <div className="mt-6 pt-6 border-t border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">📝 Next Steps:</h3>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">Next Steps:</h3>
             <ol className="text-xs text-gray-600 space-y-1 list-decimal list-inside">
               <li>Copy your Player ID above</li>
               <li>Go to OneSignal Dashboard → Messages → New Push</li>
